@@ -19,7 +19,7 @@ PumpBot has 3 main commands, with more potentially coming in the future. The pre
 
 The Pump command takes two arguments, the first one being the power of the pump itself. This is an integer from 0 to 100, 0 being completely off and 100 being on full power. The second argument is the duration to turn the pump on for, in seconds
 
-Example: ```p!pump 70, 20``` would turn the pump on 70 percent power, for 20 seconds.
+Example: ```p!pump 70 20``` would turn the pump on 70 percent power, for 20 seconds.
 
 The second command is Vent, which vents to atmosphere, this takes one argument, and vents using the release valve for the time specified, in seconds.
 
@@ -28,3 +28,5 @@ Example: ```p!vent 15``` would open the release valve and vent to atmosphere for
 The third and final (for now) command is Pressure, which sends the current pressure read by the Programmable Air unit, as well as the calibrated atmospheric pressure. There are no arguments for this command.
 
 Example ```p!pressure``` sends the current pressure in chat, and calibrated atmospheric pressure.
+
+![Screenshot_51](https://user-images.githubusercontent.com/112515950/187774374-b6f1aa9e-4dc8-460f-8995-c4b35aefa2bd.png)
