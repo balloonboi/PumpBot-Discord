@@ -99,8 +99,8 @@ void loop() {
     if (data == "allGood" || data == "allGood\n" || data == "allGood\r\n" || data == "allGood\r") {
       allGood();
     }
-    if (data == "tensec" || data == "tensec\n" || data == "tensec\r\n" || data == "tensec\r") {
-      tensec();
+    if (data == "stop" || data == "stop\n" || data == "stop\r\n" || data == "stop\r") {
+      stop();
     }
     if (data == "fivesec" || data == "fivesec\n" || data == "fivesec\r\n" || data == "fivesec\r") {
       fivesec();
@@ -334,11 +334,8 @@ void allGood() {
   }
 }
 
-void tensec() {
-switchOnPumps(100);
+void stop() {
 closeAllValves(); 
-blow();
-delay(10000);
 switchOffPumps();
   }
 
