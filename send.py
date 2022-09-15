@@ -1,10 +1,11 @@
 import discord
 from discord import app_commands
 import serial
+import requests
 port = input('Enter the port number of the Arduino: COM')
 
 
-MY_GUILD = discord.Object(id=GUILD)  # replace with your guild id
+MY_GUILD = discord.Object(id=GUILD_ID)  # replace with your guild id
 
 
 class MyClient(discord.Client):
@@ -36,12 +37,11 @@ async def hello(interaction: discord.Interaction):
 @app_commands.describe(speed='Pump Speed', duration='Pump Strength')
 async def pump(
     interaction: discord.Interaction,
-    # This makes it so the first parameter can only be between 0 and 100.
     speed: app_commands.Range[int, 0, 100],
-    # This makes it so the second parameter must be over 0, with no maximum limit.
-    duration: app_commands.Range[int, 0, None],
+    duration: app_commands.Range[int, 0, 60],
 ):
     """Turns on the pump"""
+
     await interaction.response.send_message(f'pumping at {speed} percent for {duration} seconds')
     ser.write(str.encode(f'pump {speed}, {duration}'))
 
@@ -61,8 +61,8 @@ async def pressure(interaction: discord.Interaction):
     line = ser.readline()  # read a byte
     string = line.decode()
     stripped_string = string.strip()
-    """Gets the current pressure"""
-    await interaction.response.send_message(f'current pressure is {stripped_string} (atmospheric pressure is 493')
+    """Reads the current pressure"""
+    await interaction.response.send_message(f'current pressure is {stripped_string} (atmospheric pressure is 493)')
 
 @client.tree.command()
 async def stop(interaction: discord.Interaction):
@@ -70,8 +70,24 @@ async def stop(interaction: discord.Interaction):
     await interaction.response.send_message('stopping pump')
     ser.write(str.encode('stop'))
 
+@client.tree.command()
+@app_commands.describe(speed='Vibration Speed', duration='Vibration Duration')
+async def vibrate(
+    interaction: discord.Interaction,
+    speed: app_commands.Range[int, 0, 20],
+    duration: app_commands.Range[int, 0, None],
+):
+    """Vibrates the toy"""
+    await interaction.response.send_message(f'vibrating at setting {speed} for {duration} seconds')
+    requests.post("http://127.0.0.1:20010/command",
+                  json={"command": "Function",
+                        "action": f"Vibrate:{speed},Pump:3",
+                        "timeSec": f"{duration}",
+                        "apiVer": 1})
+
+
 
 for i in range(50):
     line = ser.readline()   # read a byte
     print(line)
-client.run('TOKEN')
+client.run('TOKEN')  # replace with your token
